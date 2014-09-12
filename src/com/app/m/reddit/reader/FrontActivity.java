@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class Front extends Activity implements
+public class FrontActivity extends Activity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
 
 	/**
@@ -144,7 +144,7 @@ public class Front extends Activity implements
 		@Override
 		public void onAttach(Activity activity) {
 			super.onAttach(activity);
-			((Front) activity).onSectionAttached(getArguments().getInt(
+			((FrontActivity) activity).onSectionAttached(getArguments().getInt(
 					ARG_SECTION_NUMBER));
 		}
 	}
