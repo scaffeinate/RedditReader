@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Reddit Reader</string>
+    <string name="title_section1">Hot</string>
+    <string name="title_section2">New</string>
+    <string name="title_section3">Rising</string>
+    <string name="title_section4">Controversial</string>
+    <string name="title_section5">Top</string>
+    <string name="title_section6">Gilded</string>
+    <string name="title_section7">Promoted</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="action_settings">Settings</string>
+
+</resources>
