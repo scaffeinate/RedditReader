@@ -1,15 +1,15 @@
 package com.app.m.reddit.reader;
 
-import android.app.Activity;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,9 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.app.m.reddit.reader.util.SlideListAdapter;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation
@@ -102,20 +103,20 @@ public class NavigationDrawerFragment extends Fragment {
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 						selectItem(position);
+						((SlideListAdapter) mDrawerListView.getAdapter()).setPositionSelected(position);
 					}
 				});
-		mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar()
-				.getThemedContext(),
-				android.R.layout.simple_list_item_activated_1,
-				android.R.id.text1, new String[] {
-						getString(R.string.title_section1),
-						getString(R.string.title_section2),
-						getString(R.string.title_section3), 
-						getString(R.string.title_section4),
-						getString(R.string.title_section5),
-						getString(R.string.title_section6),
-						getString(R.string.title_section7) }));
-		mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+		
+		mDrawerListView.setAdapter(new SlideListAdapter(getActivity(), new String[]{
+			getString(R.string.title_section1),
+			getString(R.string.title_section2),
+			getString(R.string.title_section3), 
+			getString(R.string.title_section4),
+			getString(R.string.title_section5),
+			getString(R.string.title_section6),
+			getString(R.string.title_section7)
+		}));
+		((SlideListAdapter) mDrawerListView.getAdapter()).setPositionSelected(mCurrentSelectedPosition);
 		return mDrawerListView;
 	}
 
