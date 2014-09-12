@@ -9,9 +9,8 @@
         android:title="@string/action_refresh"/>
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="ifRoom"
-        android:icon="@drawable/ic_core_overflow"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_settings"
         android:title="@string/action_settings"/>
 
 </menu>
