@@ -3,6 +3,7 @@ package com.app.m.reddit.reader.util;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,10 +63,14 @@ public class SlideListAdapter extends BaseAdapter {
 			holder = (ViewHolder) vi.getTag();
 		}
 		
-		if (arg0 == position_selected)
-	        vi.setBackgroundResource(R.drawable.list_item_background_selected);
-		else
+		if (arg0 == position_selected){
+	        holder.textview_item_name.setTextColor(Color.WHITE);
+			vi.setBackgroundResource(R.drawable.list_item_background_selected);
+		}
+		else{
+			holder.textview_item_name.setTextColor(Color.BLACK);
 			vi.setBackgroundResource(R.drawable.list_item_background);
+		}
 		
 		try {
 			holder.textview_item_name.setText(list_items[arg0]);
