@@ -33,22 +33,27 @@ public final class R {
     }
     public static final class drawable {
         public static final int drawer_shadow=0x7f020000;
-        public static final int ic_action_settings=0x7f020001;
-        public static final int ic_core_overflow=0x7f020002;
-        public static final int ic_drawer=0x7f020003;
-        public static final int ic_launcher=0x7f020004;
-        public static final int ic_navigation_refresh=0x7f020005;
-        public static final int list_item_background=0x7f020006;
-        public static final int list_item_background_selected=0x7f020007;
+        public static final int ic_action_search=0x7f020001;
+        public static final int ic_action_settings=0x7f020002;
+        public static final int ic_core_overflow=0x7f020003;
+        public static final int ic_drawer=0x7f020004;
+        public static final int ic_launcher=0x7f020005;
+        public static final int ic_navigation_refresh=0x7f020006;
+        public static final int list_item_background=0x7f020007;
+        public static final int list_item_background_selected=0x7f020008;
     }
     public static final class id {
-        public static final int action_example=0x7f090005;
-        public static final int action_settings=0x7f090006;
+        public static final int action_overflow=0x7f090009;
+        public static final int action_refresh=0x7f090007;
+        public static final int action_search=0x7f090008;
+        public static final int action_settings=0x7f09000a;
         public static final int container=0x7f090001;
         public static final int drawer_layout=0x7f090000;
+        public static final int listView1=0x7f090004;
         public static final int navigation_drawer=0x7f090002;
-        public static final int slidemenu=0x7f090003;
-        public static final int textView_item_name=0x7f090004;
+        public static final int progressBar=0x7f090003;
+        public static final int slidemenu=0x7f090005;
+        public static final int textView_item_name=0x7f090006;
     }
     public static final class layout {
         public static final int activity_front=0x7f030000;
@@ -62,6 +67,7 @@ public final class R {
     }
     public static final class string {
         public static final int action_refresh=0x7f06000a;
+        public static final int action_search=0x7f06000c;
         public static final int action_settings=0x7f06000b;
         public static final int app_name=0x7f060000;
         public static final int navigation_drawer_close=0x7f060009;
