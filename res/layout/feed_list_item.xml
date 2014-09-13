@@ -4,12 +4,20 @@
     android:layout_height="match_parent"
     android:paddingTop="20dp"
     android:paddingBottom="20dp">
-    <TextView 
-        android:id="@+id/textView_title"
+    <ImageView 
+        android:id="@+id/imageView_thumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="10dp"
+        android:contentDescription="@string/thumbnail"
+        />
+    <TextView 
+        android:id="@+id/textView_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/imageView_thumbnail"
+        android:layout_marginLeft="20dp"
         />
 </RelativeLayout>

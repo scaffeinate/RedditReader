@@ -9,22 +9,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.m.reddit.reader.R;
 import com.app.m.reddit.reader.common.Children;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class FeedListAdapter extends BaseAdapter {
 
 	private LinkedList<Children> feedLinkedList;
 	private LayoutInflater inflater;
-	
-	public FeedListAdapter(Activity activity, LinkedList<Children> feedLinkedList){
+	private ImageLoader imageLoader;
+	private DisplayImageOptions options;
+
+	public FeedListAdapter(Activity activity, LinkedList<Children> feedLinkedList, ImageLoader imageLoader, DisplayImageOptions options){
 		this.feedLinkedList = feedLinkedList;
+		this.imageLoader = imageLoader;
+		this.options = options;
 		inflater = (LayoutInflater) activity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
-	
+
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
@@ -45,8 +52,9 @@ public class FeedListAdapter extends BaseAdapter {
 
 	public static class ViewHolder {
 		public TextView textView_title;
+		public ImageView imageView_thumbnail;
 	}
-	
+
 	@SuppressLint("InflateParams")
 	@Override
 	public View getView(int arg0, View arg1, ViewGroup arg2) {
@@ -59,12 +67,14 @@ public class FeedListAdapter extends BaseAdapter {
 			holder = new ViewHolder();
 			holder.textView_title = (TextView) vi
 					.findViewById(R.id.textView_title);
+			holder.imageView_thumbnail = (ImageView) vi.findViewById(R.id.imageView_thumbnail);
 			vi.setTag(holder);
 		} else {
 			holder = (ViewHolder) vi.getTag();
 		}
-		
+
 		holder.textView_title.setText(feedLinkedList.get(arg0).getData().getTitle());
+		imageLoader.displayImage(feedLinkedList.get(arg0).getData().getThumbnail(), holder.imageView_thumbnail, options);
 
 		return vi;
 	}

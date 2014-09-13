@@ -20,6 +20,10 @@ import com.app.m.reddit.reader.constants.Constants;
 import com.app.m.reddit.reader.util.FeedListAdapter;
 import com.app.m.reddit.reader.util.JSONParser;
 import com.app.m.reddit.reader.util.NetworkUtil;
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -36,6 +40,8 @@ public class PlaceholderFragment extends Fragment {
 	private NetworkUtil networkUtil;
 	private JSONParser jsonParser;
 	private LinkedList<Children> feedLinkedList;
+	private ImageLoader imageLoader;
+	private DisplayImageOptions options;
 	
 	private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -64,6 +70,27 @@ public class PlaceholderFragment extends Fragment {
 		networkUtil = new NetworkUtil(getActivity());
 		jsonParser = new JSONParser();
 	
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getActivity().getApplicationContext())
+		.memoryCacheExtraOptions(480, 800) // default = device screen dimensions
+		.diskCacheExtraOptions(480, 800, null)
+		.memoryCache(new LruMemoryCache(2 * 1024 * 1024))
+		.memoryCacheSize(2 * 1024 * 1024)
+		.diskCacheSize(50 * 1024 * 1024)
+		.diskCacheFileCount(100)
+		.writeDebugLogs()
+		.build();
+		
+		options = new DisplayImageOptions.Builder()
+        .showImageOnLoading(R.drawable.ic_launcher)
+        .showImageForEmptyUri(R.drawable.ic_launcher)
+        .showImageOnFail(R.drawable.ic_launcher)
+        .resetViewBeforeLoading(false)
+        .delayBeforeLoading(1000)
+        .build();
+		
+		imageLoader = ImageLoader.getInstance();
+		imageLoader.init(config);
+		
 		if(networkUtil.isInternetWorking()){
 			String stringUrl = Constants.BASE_URL + Constants.HOT;
 			new GetFeedTask().execute(stringUrl);
@@ -99,7 +126,7 @@ public class PlaceholderFragment extends Fragment {
 		protected void onPostExecute(String result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-			listAdapter = new FeedListAdapter(getActivity(), feedLinkedList);
+			listAdapter = new FeedListAdapter(getActivity(), feedLinkedList, imageLoader, options);
 			feedList.setAdapter(listAdapter);
 			progressBarLoading.setVisibility(View.INVISIBLE);
 		}
