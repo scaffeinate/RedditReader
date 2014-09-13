@@ -1,5 +1,7 @@
 package com.app.m.reddit.reader.fragments;
 
+import java.util.LinkedList;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.AsyncTask;
@@ -13,8 +15,10 @@ import android.widget.Toast;
 
 import com.app.m.reddit.reader.FrontActivity;
 import com.app.m.reddit.reader.R;
+import com.app.m.reddit.reader.common.Children;
 import com.app.m.reddit.reader.constants.Constants;
 import com.app.m.reddit.reader.util.FeedListAdapter;
+import com.app.m.reddit.reader.util.JSONParser;
 import com.app.m.reddit.reader.util.NetworkUtil;
 
 /**
@@ -30,6 +34,8 @@ public class PlaceholderFragment extends Fragment {
 	private ProgressBar progressBarLoading;
 	private FeedListAdapter listAdapter;
 	private NetworkUtil networkUtil;
+	private JSONParser jsonParser;
+	private LinkedList<Children> feedLinkedList;
 	
 	private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -45,7 +51,7 @@ public class PlaceholderFragment extends Fragment {
 	}
 
 	public PlaceholderFragment() {
-		networkUtil = new NetworkUtil(getActivity());
+		
 	}
 
 	@Override
@@ -55,7 +61,16 @@ public class PlaceholderFragment extends Fragment {
 				container, false);
 		feedList = (ListView) rootView.findViewById(R.id.feedListView);
 		progressBarLoading = (ProgressBar) rootView.findViewById(R.id.progressBar);
-		initialise();
+		networkUtil = new NetworkUtil(getActivity());
+		jsonParser = new JSONParser();
+	
+		if(networkUtil.isInternetWorking()){
+			String stringUrl = Constants.BASE_URL + Constants.HOT;
+			new GetFeedTask().execute(stringUrl);
+		} else {
+			Toast.makeText(getActivity(), "No network connection available.", Toast.LENGTH_SHORT).show();
+		}
+		
 		return rootView;
 	}
 
@@ -66,27 +81,27 @@ public class PlaceholderFragment extends Fragment {
 				ARG_SECTION_NUMBER));
 	}
 	
-	private void initialise(){
-		if(networkUtil.isInternetWorking()){
-			String frontPageHot = Constants.BASE_URL + Constants.HOT;
-			new GetFeedTask().execute(frontPageHot);
-		} else {
-			Toast.makeText(getActivity(), "No Network Access!", Toast.LENGTH_SHORT).show();
-		}
-	}
-	
 	private class GetFeedTask extends AsyncTask<String, Integer, String>{
-
+		
 		@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
-			return null;
+			try {
+				feedLinkedList = jsonParser.parseJSON(params[0]);
+				return "";
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				return "Unable to retrieve data. URL may be invalid.";
+			}
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
+			listAdapter = new FeedListAdapter(getActivity(), feedLinkedList);
+			feedList.setAdapter(listAdapter);
+			progressBarLoading.setVisibility(View.INVISIBLE);
 		}
 
 		@Override

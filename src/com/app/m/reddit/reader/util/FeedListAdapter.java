@@ -12,14 +12,14 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.app.m.reddit.reader.R;
-import com.app.m.reddit.reader.common.Subreddit;
+import com.app.m.reddit.reader.common.Children;
 
 public class FeedListAdapter extends BaseAdapter {
 
-	private LinkedList<Subreddit> feedLinkedList;
+	private LinkedList<Children> feedLinkedList;
 	private LayoutInflater inflater;
 	
-	public FeedListAdapter(Activity activity, LinkedList<Subreddit> feedLinkedList){
+	public FeedListAdapter(Activity activity, LinkedList<Children> feedLinkedList){
 		this.feedLinkedList = feedLinkedList;
 		inflater = (LayoutInflater) activity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -55,7 +55,7 @@ public class FeedListAdapter extends BaseAdapter {
 		final ViewHolder holder;
 
 		if (arg1 == null) {
-			vi = inflater.inflate(R.layout.slide_list_item, null);
+			vi = inflater.inflate(R.layout.feed_list_item, null);
 			holder = new ViewHolder();
 			holder.textView_title = (TextView) vi
 					.findViewById(R.id.textView_title);
@@ -64,11 +64,7 @@ public class FeedListAdapter extends BaseAdapter {
 			holder = (ViewHolder) vi.getTag();
 		}
 		
-		try {
-			holder.textView_title.setText(feedLinkedList.get(arg0).getTitle());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		holder.textView_title.setText(feedLinkedList.get(arg0).getData().getTitle());
 
 		return vi;
 	}
