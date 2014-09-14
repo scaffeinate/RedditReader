@@ -59,8 +59,20 @@ public class NavigationDrawerFragment extends Fragment {
 	private int mCurrentSelectedPosition = 0;
 	private boolean mFromSavedInstanceState;
 	private boolean mUserLearnedDrawer;
+	private String[] subReddits;
+
+	public String[] getSubReddits() {
+		return subReddits;
+	}
+
+	public void setSubReddits(String[] subReddits) {
+		this.subReddits = subReddits;
+	}
 
 	public NavigationDrawerFragment() {
+		subReddits = new String[]{
+			"Front", "All", "aww", "pics", "videos", "WTF", "funny", "gifs", "todayilearned", "AskReddit"
+		};
 	}
 
 	@Override
@@ -98,24 +110,16 @@ public class NavigationDrawerFragment extends Fragment {
 		mDrawerListView = (ListView) inflater.inflate(
 				R.layout.fragment_navigation_drawer, container, false);
 		mDrawerListView
-				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view,
-							int position, long id) {
-						selectItem(position);
-						((SlideListAdapter) mDrawerListView.getAdapter()).setPositionSelected(position);
-					}
-				});
-		
-		mDrawerListView.setAdapter(new SlideListAdapter(getActivity(), new String[]{
-			getString(R.string.title_section1),
-			getString(R.string.title_section2),
-			getString(R.string.title_section3), 
-			getString(R.string.title_section4),
-			getString(R.string.title_section5),
-			getString(R.string.title_section6),
-			getString(R.string.title_section7)
-		}));
+		.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				selectItem(position);
+				((SlideListAdapter) mDrawerListView.getAdapter()).setPositionSelected(position);
+			}
+		});
+
+		mDrawerListView.setAdapter(new SlideListAdapter(getActivity(), subReddits));
 		((SlideListAdapter) mDrawerListView.getAdapter()).setPositionSelected(mCurrentSelectedPosition);
 		return mDrawerListView;
 	}
@@ -151,17 +155,17 @@ public class NavigationDrawerFragment extends Fragment {
 		// ActionBarDrawerToggle ties together the the proper interactions
 		// between the navigation drawer and the action bar app icon.
 		mDrawerToggle = new ActionBarDrawerToggle(getActivity(), /* host Activity */
-		mDrawerLayout, /* DrawerLayout object */
-		R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
-		R.string.navigation_drawer_open, /*
-										 * "open drawer" description for
-										 * accessibility
-										 */
-		R.string.navigation_drawer_close /*
-										 * "close drawer" description for
-										 * accessibility
-										 */
-		) {
+				mDrawerLayout, /* DrawerLayout object */
+				R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
+				R.string.navigation_drawer_open, /*
+				 * "open drawer" description for
+				 * accessibility
+				 */
+				R.string.navigation_drawer_close /*
+				 * "close drawer" description for
+				 * accessibility
+				 */
+				) {
 			@Override
 			public void onDrawerClosed(View drawerView) {
 				super.onDrawerClosed(drawerView);
@@ -170,7 +174,7 @@ public class NavigationDrawerFragment extends Fragment {
 				}
 
 				getActivity().invalidateOptionsMenu(); // calls
-														// onPrepareOptionsMenu()
+				// onPrepareOptionsMenu()
 			}
 
 			@Override
@@ -188,11 +192,11 @@ public class NavigationDrawerFragment extends Fragment {
 					SharedPreferences sp = PreferenceManager
 							.getDefaultSharedPreferences(getActivity());
 					sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true)
-							.apply();
+					.apply();
 				}
 
 				getActivity().invalidateOptionsMenu(); // calls
-														// onPrepareOptionsMenu()
+				// onPrepareOptionsMenu()
 			}
 		};
 
@@ -278,7 +282,7 @@ public class NavigationDrawerFragment extends Fragment {
 
 		if (item.getItemId() == R.id.action_refresh) {
 			Toast.makeText(getActivity(), "Refreshing Feed", Toast.LENGTH_SHORT)
-					.show();
+			.show();
 			return true;
 		}
 

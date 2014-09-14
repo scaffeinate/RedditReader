@@ -25,7 +25,7 @@ public class FrontActivity extends FragmentActivity implements
 	 * Used to store the last screen title. For use in
 	 * {@link #restoreActionBar()}.
 	 */
-	private CharSequence mTitle = "hot";
+	private CharSequence mTitle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,37 +44,23 @@ public class FrontActivity extends FragmentActivity implements
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
 		// update the main content by replacing fragments
+	  String subReddit = "";
+	  try {
+      subReddit = mNavigationDrawerFragment.getSubReddits()[position];
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager
 				.beginTransaction()
 				.replace(R.id.container,
-						PlaceholderFragment.newInstance(position + 1, mTitle.toString().toUpperCase(Locale.US))).commit();
+						PlaceholderFragment.newInstance(position + 1, subReddit.toLowerCase(Locale.getDefault()))).commit();
+		
 	}
 
 	public void onSectionAttached(int number) {
-		switch (number) {
-		case 1:
-			mTitle = getString(R.string.title_section1);
-			break;
-		case 2:
-			mTitle = getString(R.string.title_section2);
-			break;
-		case 3:
-			mTitle = getString(R.string.title_section3);
-			break;
-		case 4:
-			mTitle = getString(R.string.title_section4);
-			break;
-		case 5:
-			mTitle = getString(R.string.title_section5);
-			break;
-		case 6:
-			mTitle = getString(R.string.title_section6);
-			break;
-		case 7:
-			mTitle = getString(R.string.title_section7);
-			break;
-		}
+		mTitle = mNavigationDrawerFragment.getSubReddits()[number-1];
 	}
 
 	public void restoreActionBar() {

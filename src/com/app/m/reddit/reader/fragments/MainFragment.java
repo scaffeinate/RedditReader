@@ -2,6 +2,7 @@ package com.app.m.reddit.reader.fragments;
 
 import java.util.LinkedList;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,7 +19,9 @@ import com.app.m.reddit.reader.common.Children;
 import com.app.m.reddit.reader.util.FeedListAdapter;
 import com.app.m.reddit.reader.util.JSONParser;
 import com.app.m.reddit.reader.util.NetworkUtil;
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 public class MainFragment extends Fragment {
 	private ListView feedList;
@@ -29,18 +32,19 @@ public class MainFragment extends Fragment {
 	private LinkedList<Children> feedLinkedList;
 	private ImageLoader imageLoader;
 	private Button buttonLoadMore;
-
-	private static final String CATEGORY = "category";
+	
 	private String url;
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View rootView = inflater.inflate(R.layout.fragment_front,
+		View rootView = inflater.inflate(R.layout.fragment_tab,
 				container, false);
 		feedList = (ListView) rootView.findViewById(R.id.feedListView);
 		progressBarLoading = (ProgressBar) rootView.findViewById(R.id.progressBar);
 
+		url = getArguments().getString("url");
+		
 		buttonLoadMore = new Button(getActivity().getApplicationContext());
 		buttonLoadMore.setBackgroundResource(R.drawable.button_background);
 		buttonLoadMore.setText("Load More");
@@ -64,5 +68,71 @@ public class MainFragment extends Fragment {
 		}
 
 		return rootView;
+	}
+
+	private void setUpImageLoader() {
+		// TODO Auto-generated method stub
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getActivity().getApplicationContext())
+		.memoryCacheExtraOptions(480, 800) // default = device screen dimensions
+		.diskCacheExtraOptions(480, 800, null)
+		.memoryCache(new LruMemoryCache(2 * 1024 * 1024))
+		.memoryCacheSize(2 * 1024 * 1024)
+		.diskCacheSize(50 * 1024 * 1024)
+		.diskCacheFileCount(100)
+		.writeDebugLogs()
+		.build();
+
+		imageLoader = ImageLoader.getInstance();
+		imageLoader.init(config);
+	}
+
+	private class GetFeedTask extends AsyncTask<String, Integer, String>{
+
+		@Override
+		protected String doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			try {
+				feedLinkedList = jsonParser.parseJSON(params[0]);
+				return "";
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				return "Unable to retrieve data. URL may be invalid.";
+			}
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			listAdapter = new FeedListAdapter(getActivity(), feedLinkedList, imageLoader);
+			feedList.setAdapter(listAdapter);
+			feedList.addFooterView(buttonLoadMore);
+			progressBarLoading.setVisibility(View.INVISIBLE);
+		}
+	}
+
+	private class LoadMoreTask extends AsyncTask<String, Integer, String> {
+
+		@Override
+		protected String doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			try {
+				for(Children child:jsonParser.parseJSON(params[0])){
+					feedLinkedList.add(child);
+				}
+				return "";
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				return "Unable to retrieve data. URL may be invalid.";
+			}
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			listAdapter.notifyDataSetChanged();
+		}
+
 	}
 }
