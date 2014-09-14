@@ -8,7 +8,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -21,7 +23,6 @@ import com.app.m.reddit.reader.util.FeedListAdapter;
 import com.app.m.reddit.reader.util.JSONParser;
 import com.app.m.reddit.reader.util.NetworkUtil;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -41,23 +42,22 @@ public class PlaceholderFragment extends Fragment {
 	private JSONParser jsonParser;
 	private LinkedList<Children> feedLinkedList;
 	private ImageLoader imageLoader;
-	private DisplayImageOptions options;
+	private Button buttonLoadMore;
 	
 	private static final String ARG_SECTION_NUMBER = "section_number";
+	private static final String CATEGORY = "category";
+	private String url;
 
 	/**
 	 * Returns a new instance of this fragment for the given section number.
 	 */
-	public static PlaceholderFragment newInstance(int sectionNumber) {
+	public static PlaceholderFragment newInstance(int sectionNumber, String mCategory) {
 		PlaceholderFragment fragment = new PlaceholderFragment();
 		Bundle args = new Bundle();
 		args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+		args.putString(CATEGORY, mCategory);
 		fragment.setArguments(args);
 		return fragment;
-	}
-
-	public PlaceholderFragment() {
-		
 	}
 
 	@Override
@@ -67,9 +67,32 @@ public class PlaceholderFragment extends Fragment {
 				container, false);
 		feedList = (ListView) rootView.findViewById(R.id.feedListView);
 		progressBarLoading = (ProgressBar) rootView.findViewById(R.id.progressBar);
+		buttonLoadMore = new Button(getActivity().getApplicationContext());
+		buttonLoadMore.setBackgroundResource(R.drawable.button_background);
+		buttonLoadMore.setText("Load More");
+		buttonLoadMore.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub				
+				new LoadMoreTask().execute(url + "?count=25&after=" + jsonParser.getAfter());
+			}
+		});
 		networkUtil = new NetworkUtil(getActivity());
 		jsonParser = new JSONParser();
 	
+		setUpImageLoader();
+		
+		if(networkUtil.isInternetWorking()){
+			new GetFeedTask().execute(url);
+		} else {
+			Toast.makeText(getActivity(), "No network connection available.", Toast.LENGTH_SHORT).show();
+		}
+		
+		return rootView;
+	}
+
+	private void setUpImageLoader() {
+		// TODO Auto-generated method stub
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getActivity().getApplicationContext())
 		.memoryCacheExtraOptions(480, 800) // default = device screen dimensions
 		.diskCacheExtraOptions(480, 800, null)
@@ -80,25 +103,8 @@ public class PlaceholderFragment extends Fragment {
 		.writeDebugLogs()
 		.build();
 		
-		options = new DisplayImageOptions.Builder()
-        .showImageOnLoading(R.drawable.ic_launcher)
-        .showImageForEmptyUri(R.drawable.ic_launcher)
-        .showImageOnFail(R.drawable.ic_launcher)
-        .resetViewBeforeLoading(false)
-        .delayBeforeLoading(1000)
-        .build();
-		
 		imageLoader = ImageLoader.getInstance();
 		imageLoader.init(config);
-		
-		if(networkUtil.isInternetWorking()){
-			String stringUrl = Constants.BASE_URL + Constants.HOT;
-			new GetFeedTask().execute(stringUrl);
-		} else {
-			Toast.makeText(getActivity(), "No network connection available.", Toast.LENGTH_SHORT).show();
-		}
-		
-		return rootView;
 	}
 
 	@Override
@@ -106,6 +112,7 @@ public class PlaceholderFragment extends Fragment {
 		super.onAttach(activity);
 		((FrontActivity) activity).onSectionAttached(getArguments().getInt(
 				ARG_SECTION_NUMBER));
+		url = constructUrl(getArguments().getString(CATEGORY));
 	}
 	
 	private class GetFeedTask extends AsyncTask<String, Integer, String>{
@@ -126,15 +133,66 @@ public class PlaceholderFragment extends Fragment {
 		protected void onPostExecute(String result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-			listAdapter = new FeedListAdapter(getActivity(), feedLinkedList, imageLoader, options);
+			listAdapter = new FeedListAdapter(getActivity(), feedLinkedList, imageLoader);
 			feedList.setAdapter(listAdapter);
+			feedList.addFooterView(buttonLoadMore);
 			progressBarLoading.setVisibility(View.INVISIBLE);
+		}
+	}
+	
+	private class LoadMoreTask extends AsyncTask<String, Integer, String> {
+
+		@Override
+		protected String doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			try {
+				for(Children child:jsonParser.parseJSON(params[0])){
+					feedLinkedList.add(child);
+				}
+				return "";
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				return "Unable to retrieve data. URL may be invalid.";
+			}
 		}
 
 		@Override
-		protected void onPreExecute() {
+		protected void onPostExecute(String result) {
 			// TODO Auto-generated method stub
-			super.onPreExecute();
+			super.onPostExecute(result);
+			listAdapter.notifyDataSetChanged();
 		}
+		
+	}
+	
+	private String constructUrl(String category){
+		String url = "";
+		switch (category) {
+		case "HOT":
+			url = Constants.BASE_URL + Constants.HOT;
+			break;
+		case "RISING":
+			url = Constants.BASE_URL + Constants.RISING;
+			break;
+		case "NEW":
+			url = Constants.BASE_URL + Constants.NEW;
+			break;
+		case "CONTROVERSIAL":
+			url = Constants.BASE_URL + Constants.CONTROVERSIAL;
+			break;
+		case "TOP":
+			url = Constants.BASE_URL + Constants.TOP;
+			break;
+		case "GILDED":
+			url = Constants.BASE_URL + Constants.GILDED;
+			break;
+		case "PROMOTED":
+			url = Constants.BASE_URL + Constants.PROMOTED;
+			break;
+		default:
+			url = Constants.BASE_URL + Constants.HOT;
+			break;
+		}
+		return url;
 	}
 }

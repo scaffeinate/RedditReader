@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class JSONParser {
 	
 	private LinkedList<Children> resultLinkedList;
+	private String after;
 	
 	public LinkedList<Children> parseJSON(String url){
 		ObjectMapper mapper = new ObjectMapper();
@@ -37,9 +38,19 @@ public class JSONParser {
 			e.printStackTrace();
 		}
 		
+		setAfter(subreddit.getData().getAfter());
+		
 		Data data = subreddit.getData();
 		resultLinkedList = data.getChildren();
 		
 		return resultLinkedList;
+	}
+
+	public String getAfter() {
+		return after;
+	}
+
+	public void setAfter(String after) {
+		this.after = after;
 	}
 }

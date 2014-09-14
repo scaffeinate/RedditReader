@@ -24,12 +24,18 @@ public class FeedListAdapter extends BaseAdapter {
 	private ImageLoader imageLoader;
 	private DisplayImageOptions options;
 
-	public FeedListAdapter(Activity activity, LinkedList<Children> feedLinkedList, ImageLoader imageLoader, DisplayImageOptions options){
+	public FeedListAdapter(Activity activity, LinkedList<Children> feedLinkedList, ImageLoader imageLoader){
 		this.feedLinkedList = feedLinkedList;
 		this.imageLoader = imageLoader;
-		this.options = options;
 		inflater = (LayoutInflater) activity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		options = new DisplayImageOptions.Builder()
+        .showImageOnLoading(R.drawable.ic_launcher)
+        .showImageForEmptyUri(R.drawable.ic_launcher)
+        .showImageOnFail(R.drawable.ic_launcher)
+        .resetViewBeforeLoading(false)
+        .delayBeforeLoading(500)
+        .build();
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package com.app.m.reddit.reader;
 
+import java.util.Locale;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -23,7 +25,7 @@ public class FrontActivity extends Activity implements
 	 * Used to store the last screen title. For use in
 	 * {@link #restoreActionBar()}.
 	 */
-	private CharSequence mTitle;
+	private CharSequence mTitle = "hot";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class FrontActivity extends Activity implements
 		fragmentManager
 				.beginTransaction()
 				.replace(R.id.container,
-						PlaceholderFragment.newInstance(position + 1)).commit();
+						PlaceholderFragment.newInstance(position + 1, mTitle.toString().toUpperCase(Locale.US))).commit();
 	}
 
 	public void onSectionAttached(int number) {
