@@ -3,16 +3,16 @@ package com.app.m.reddit.reader;
 import java.util.Locale;
 
 import android.app.ActionBar;
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.app.m.reddit.reader.fragments.PlaceholderFragment;
 
-public class FrontActivity extends Activity implements
+public class FrontActivity extends FragmentActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
 
 	/**
@@ -44,7 +44,7 @@ public class FrontActivity extends Activity implements
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
 		// update the main content by replacing fragments
-		FragmentManager fragmentManager = getFragmentManager();
+		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager
 				.beginTransaction()
 				.replace(R.id.container,

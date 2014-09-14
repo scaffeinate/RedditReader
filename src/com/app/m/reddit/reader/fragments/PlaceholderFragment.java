@@ -1,11 +1,15 @@
 package com.app.m.reddit.reader.fragments;
 
 import java.util.LinkedList;
+import java.util.Locale;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,8 +40,10 @@ public class PlaceholderFragment extends Fragment {
 	 * fragment.
 	 */
 	private ListView feedList;
+	private ViewPager mViewPager;
 	private ProgressBar progressBarLoading;
 	private FeedListAdapter listAdapter;
+	private SectionsPagerAdapter mSectionsPagerAdapter;
 	private NetworkUtil networkUtil;
 	private JSONParser jsonParser;
 	private LinkedList<Children> feedLinkedList;
@@ -67,6 +73,11 @@ public class PlaceholderFragment extends Fragment {
 				container, false);
 		feedList = (ListView) rootView.findViewById(R.id.feedListView);
 		progressBarLoading = (ProgressBar) rootView.findViewById(R.id.progressBar);
+		mSectionsPagerAdapter = new SectionsPagerAdapter(
+				getChildFragmentManager());
+		
+		mViewPager = (ViewPager) rootView.findViewById(R.id.pager);
+		mViewPager.setAdapter(mSectionsPagerAdapter);
 		buttonLoadMore = new Button(getActivity().getApplicationContext());
 		buttonLoadMore.setBackgroundResource(R.drawable.button_background);
 		buttonLoadMore.setText("Load More");
@@ -82,11 +93,11 @@ public class PlaceholderFragment extends Fragment {
 	
 		setUpImageLoader();
 		
-		if(networkUtil.isInternetWorking()){
+		/*if(networkUtil.isInternetWorking()){
 			new GetFeedTask().execute(url);
 		} else {
 			Toast.makeText(getActivity(), "No network connection available.", Toast.LENGTH_SHORT).show();
-		}
+		}*/
 		
 		return rootView;
 	}
@@ -194,5 +205,59 @@ public class PlaceholderFragment extends Fragment {
 			break;
 		}
 		return url;
+	}
+	
+	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+		public SectionsPagerAdapter(FragmentManager fm) {
+			super(fm);
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+			// getItem is called to instantiate the fragment for the given page.
+			// Return a DummySectionFragment (defined as a static inner class
+			// below) with the page number as its lone argument.
+			Fragment fragment = new FeedFragment();
+			Bundle args = new Bundle();
+			args.putInt(ARG_SECTION_NUMBER, position + 1);
+			fragment.setArguments(args);
+			return fragment;
+		}
+
+		@Override
+		public int getCount() {
+			// Show 3 total pages.
+			return 3;
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			Locale l = Locale.getDefault();
+			switch (position) {
+			case 0:
+				return getString(R.string.title_section1).toUpperCase(l);
+			case 1:
+				return getString(R.string.title_section2).toUpperCase(l);
+			case 2:
+				return getString(R.string.title_section3).toUpperCase(l);
+			}
+			return null;
+		}
+	}
+	
+	public static class FeedFragment extends Fragment {
+		public static final String ARG_SECTION_NUMBER = "section_number";
+
+		public FeedFragment() {
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment_tab,
+					container, false);
+			return rootView;
+		}
 	}
 }
