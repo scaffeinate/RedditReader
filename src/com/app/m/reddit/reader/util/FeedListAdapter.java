@@ -30,9 +30,7 @@ public class FeedListAdapter extends BaseAdapter {
 		inflater = (LayoutInflater) activity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		options = new DisplayImageOptions.Builder()
-        .showImageOnLoading(R.drawable.ic_launcher)
-        .showImageForEmptyUri(R.drawable.ic_launcher)
-        .showImageOnFail(R.drawable.ic_launcher)
+        .showImageOnLoading(R.drawable.ic_default_thumbnail)
         .resetViewBeforeLoading(false)
         .delayBeforeLoading(500)
         .build();

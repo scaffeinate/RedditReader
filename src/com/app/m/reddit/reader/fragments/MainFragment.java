@@ -46,7 +46,6 @@ public class MainFragment extends Fragment {
 		url = getArguments().getString("url");
 		
 		buttonLoadMore = new Button(getActivity().getApplicationContext());
-		buttonLoadMore.setBackgroundResource(R.drawable.button_background);
 		buttonLoadMore.setText("Load More");
 		networkUtil = new NetworkUtil(getActivity());
 		jsonParser = new JSONParser();
@@ -73,13 +72,11 @@ public class MainFragment extends Fragment {
 	private void setUpImageLoader() {
 		// TODO Auto-generated method stub
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getActivity().getApplicationContext())
-		.memoryCacheExtraOptions(480, 800) // default = device screen dimensions
 		.diskCacheExtraOptions(480, 800, null)
 		.memoryCache(new LruMemoryCache(2 * 1024 * 1024))
 		.memoryCacheSize(2 * 1024 * 1024)
 		.diskCacheSize(50 * 1024 * 1024)
 		.diskCacheFileCount(100)
-		.writeDebugLogs()
 		.build();
 
 		imageLoader = ImageLoader.getInstance();
