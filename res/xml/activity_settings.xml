@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/pref_account" >
+        <Preference
+            android:enabled="false"
+            android:title="@string/pref_login" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_customise" >
+        <CheckBoxPreference
+            android:enabled="false"
+            android:title="@string/pref_auto_referesh" />
+
+        <ListPreference
+            android:enabled="false"
+            android:entries="@array/pref_refresh_intervals"
+            android:entryValues="@array/pref_refresh_intervals"
+            android:title="@string/pref_refresh_interval" />
+
+        <Preference
+            android:enabled="false"
+            android:title="@string/pref_customise_subreddits" />
+
+        <ListPreference
+            android:enabled="false"
+            android:entries="@array/pref_font_sizes"
+            android:entryValues="@array/pref_font_sizes"
+            android:title="@string/pref_font_size" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

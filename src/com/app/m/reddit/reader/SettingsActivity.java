@@ -8,10 +8,13 @@ import android.view.MenuItem;
 
 public class SettingsActivity extends PreferenceActivity {
 
-	@Override
+	@SuppressWarnings("deprecation")
+  @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		addPreferencesFromResource(R.xml.activity_settings);
+		
 		ActionBar actionBar = getActionBar();
     actionBar.setDisplayShowHomeEnabled(true);
     actionBar.setHomeButtonEnabled(true);
