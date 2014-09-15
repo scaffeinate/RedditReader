@@ -10,6 +10,15 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 
+    <TextView
+        android:id="@+id/textView_noItems"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="@string/no_results_found"
+        android:visibility="gone" />
+
     <ListView
         android:id="@+id/feedListView"
         android:layout_width="fill_parent"

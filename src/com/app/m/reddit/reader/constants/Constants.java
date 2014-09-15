@@ -10,4 +10,5 @@ public class Constants {
 	public final static String TOP = "/top.json";
 	public final static String GILDED = "/gilded.json";
 	public final static String PROMOTED = "/ads.json";
+	public final static String WEBURL = "web_url";
 }

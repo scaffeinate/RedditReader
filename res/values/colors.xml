@@ -4,6 +4,6 @@
     <color name="base">#019c70</color>
     <color name="light_green">#1ad39e</color>
     <color name="secondary">#252e30</color>
-    <color name="grey">#ccc</color>
+    <color name="grey">#f0f0f0</color>
 
 </resources>
