@@ -34,7 +34,7 @@ public class PlaceholderFragment extends Fragment {
 	private String url;
 	private String mSubreddit;
 	private String[] categoriesList = new String[]{
-		"hot", "new", "rising", "controversial", "top", "gilded"
+		"hot", "new", "rising", "controversial", "top"
 	};
 
 	/**

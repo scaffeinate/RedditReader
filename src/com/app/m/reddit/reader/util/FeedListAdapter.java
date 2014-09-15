@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.app.m.reddit.reader.R;
 import com.app.m.reddit.reader.common.Children;
+import com.app.m.reddit.reader.common.Children.Data;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -23,10 +24,12 @@ public class FeedListAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
 	private DisplayImageOptions options;
+	private DateUtil dateUtil;
 
 	public FeedListAdapter(Activity activity, LinkedList<Children> feedLinkedList, ImageLoader imageLoader){
 		this.feedLinkedList = feedLinkedList;
 		this.imageLoader = imageLoader;
+		dateUtil = new DateUtil();
 		inflater = (LayoutInflater) activity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		options = new DisplayImageOptions.Builder()
@@ -55,7 +58,8 @@ public class FeedListAdapter extends BaseAdapter {
 	}
 
 	public static class ViewHolder {
-		public TextView textView_title;
+		public TextView textView_title, textView_author, 
+		  textView_created, textView_score, textView_comments;
 		public ImageView imageView_thumbnail;
 	}
 
@@ -71,16 +75,25 @@ public class FeedListAdapter extends BaseAdapter {
 			holder = new ViewHolder();
 			holder.textView_title = (TextView) vi
 					.findViewById(R.id.textView_title);
+			holder.textView_author = (TextView) vi.findViewById(R.id.textView_author);
+			holder.textView_created = (TextView) vi.findViewById(R.id.textView_created);
+			holder.textView_score = (TextView) vi.findViewById(R.id.textView_score);
+			holder.textView_comments = (TextView) vi.findViewById(R.id.textView_comments);
 			holder.imageView_thumbnail = (ImageView) vi.findViewById(R.id.imageView_thumbnail);
 			vi.setTag(holder);
 		} else {
 			holder = (ViewHolder) vi.getTag();
 		}
 
-		holder.textView_title.setText(feedLinkedList.get(arg0).getData().getTitle());
+		Data data = feedLinkedList.get(arg0).getData();
+		
+		holder.textView_title.setText(data.getTitle() + " ("+data.getDomain()+")");
+		holder.textView_author.setText(data.getAuthor());
+		holder.textView_created.setText(dateUtil.adjustTime(data.getCreated_utc()));
+		holder.textView_score.setText(data.getScore() + " points");
+		holder.textView_comments.setText(data.getNum_comments() + " comments");
 		imageLoader.displayImage(feedLinkedList.get(arg0).getData().getThumbnail(), holder.imageView_thumbnail, options);
 
 		return vi;
 	}
-
 }

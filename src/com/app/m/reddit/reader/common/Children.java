@@ -23,7 +23,7 @@ public class Children {
 	public static class Data {
 		private String title, domain, subreddit, url,
 		author, thumbnail, created_utc;
-		private int comments_count, score, ups;
+		private int num_comments, score, ups;
 
 		public String getUrl() {
 			return url;
@@ -67,13 +67,13 @@ public class Children {
 		public void setCreated_utc(String created_utc) {
 			this.created_utc = created_utc;
 		}
-		public int getComments_count() {
-			return comments_count;
-		}
-		public void setComments_count(int comments_count) {
-			this.comments_count = comments_count;
-		}
-		public int getScore() {
+		public int getNum_comments() {
+      return num_comments;
+    }
+    public void setNum_comments(int num_comments) {
+      this.num_comments = num_comments;
+    }
+    public int getScore() {
 			return score;
 		}
 		public void setScore(int score) {
