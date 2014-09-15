@@ -46,6 +46,7 @@ public class MainFragment extends Fragment {
 		url = getArguments().getString("url");
 		
 		buttonLoadMore = new Button(getActivity().getApplicationContext());
+		buttonLoadMore.setBackgroundResource(R.drawable.button_background);
 		buttonLoadMore.setText("Load More");
 		networkUtil = new NetworkUtil(getActivity());
 		jsonParser = new JSONParser();

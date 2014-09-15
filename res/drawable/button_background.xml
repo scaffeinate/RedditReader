@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:state_pressed="true"><shape android:shape="rectangle">
+            <solid android:color="@color/base" />
+        </shape></item>
+    <item android:state_focused="true"><shape android:shape="rectangle">
+            <solid android:color="@color/base" />
+        </shape></item>
     <item><shape android:shape="rectangle">
-            <gradient android:centerColor="@color/base" android:endColor="@color/base" android:startColor="@color/base" />
+            <solid android:color="@color/secondary" />
         </shape></item>
 
 </selector>
