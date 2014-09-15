@@ -87,6 +87,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks {
           (SearchView) menu.findItem(R.id.action_search).getActionView();
       searchView.setSearchableInfo(
           searchManager.getSearchableInfo(getComponentName()));
+      menu.findItem(R.id.action_search).collapseActionView();
       return true;
     }
     return super.onCreateOptionsMenu(menu);
@@ -103,5 +104,13 @@ NavigationDrawerFragment.NavigationDrawerCallbacks {
     }
     return super.onOptionsItemSelected(item);
   }
+
+  @Override
+  protected void onPause() {
+    // TODO Auto-generated method stub
+    super.onPause();
+    this.finish();
+  }
+  
 
 }

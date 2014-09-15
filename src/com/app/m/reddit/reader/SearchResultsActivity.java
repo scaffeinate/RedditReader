@@ -1,10 +1,12 @@
 package com.app.m.reddit.reader;
 
+import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.app.m.reddit.reader.constants.Constants;
@@ -17,6 +19,10 @@ public class SearchResultsActivity extends FragmentActivity {
     // TODO Auto-generated method stub
     super.onCreate(arg0);
     setContentView(R.layout.activity_search);
+    ActionBar actionBar = getActionBar();
+    actionBar.setDisplayShowHomeEnabled(true);
+    actionBar.setHomeButtonEnabled(true);
+    actionBar.setDisplayHomeAsUpEnabled(true);
     handleIntent(getIntent());
   }
 
@@ -37,10 +43,10 @@ public class SearchResultsActivity extends FragmentActivity {
       String url = Constants.SEARCH_URL + query;
       Bundle bundle = new Bundle();
       bundle.putString("url", url);
-      
+
       MainFragment mainFragment = new MainFragment();
       mainFragment.setArguments(bundle);
-      
+
       FragmentManager fragmentManager = getSupportFragmentManager();
       fragmentManager
       .beginTransaction()
@@ -48,5 +54,31 @@ public class SearchResultsActivity extends FragmentActivity {
 
     }
   }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+    case android.R.id.home:
+      Intent toHome = new Intent(this, FrontActivity.class);
+      startActivity(toHome);
+    }
+    return true;
+  }
+
+  @Override
+  protected void onPause() {
+    // TODO Auto-generated method stub
+    super.onPause();
+    this.finish();
+  }
+
+  @Override
+  public void onBackPressed() {
+    // TODO Auto-generated method stub
+    super.onBackPressed();
+    Intent toHome = new Intent(this, FrontActivity.class);
+    startActivity(toHome);
+  }
+  
 
 }
