@@ -5,6 +5,7 @@ import java.util.Locale;
 import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.app.m.reddit.reader.fragments.PlaceholderFragment;
 
@@ -99,9 +101,16 @@ NavigationDrawerFragment.NavigationDrawerCallbacks {
     // automatically handle clicks on the Home/Up button, so long
     // as you specify a parent activity in AndroidManifest.xml.
     int id = item.getItemId();
-    if (id == R.id.action_settings) {
-      return true;
+    switch(id){
+      case R.id.action_refresh:
+        Toast.makeText(getApplicationContext(), "Refreshing Feed", Toast.LENGTH_SHORT).show();
+        break;
+      case R.id.action_settings:
+        Intent toSettings = new Intent(this, SettingsActivity.class);
+        startActivity(toSettings);
+        break;
     }
+    
     return super.onOptionsItemSelected(item);
   }
 
