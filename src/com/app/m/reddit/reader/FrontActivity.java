@@ -31,6 +31,7 @@ NavigationDrawerFragment.NavigationDrawerCallbacks {
    * {@link #restoreActionBar()}.
    */
   private CharSequence mTitle;
+  private String subReddit = "";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,6 @@ NavigationDrawerFragment.NavigationDrawerCallbacks {
   @Override
   public void onNavigationDrawerItemSelected(int position) {
     // update the main content by replacing fragments
-    String subReddit = "";
     try {
       subReddit = mNavigationDrawerFragment.getSubReddits()[position];
     } catch (Exception e) {
@@ -103,7 +103,12 @@ NavigationDrawerFragment.NavigationDrawerCallbacks {
     int id = item.getItemId();
     switch(id){
       case R.id.action_refresh:
-        Toast.makeText(getApplicationContext(), "Refreshing Feed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Refreshing Reddit", Toast.LENGTH_SHORT).show();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager
+        .beginTransaction()
+        .replace(R.id.container,
+            PlaceholderFragment.newInstance(1, subReddit.toLowerCase(Locale.getDefault()))).commit();
         break;
       case R.id.action_settings:
         Intent toSettings = new Intent(this, SettingsActivity.class);
