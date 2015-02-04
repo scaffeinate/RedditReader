@@ -1,2 +1,2 @@
 # reddit-client-android
-Reddit Client Android
+Reddit Client App for Android
