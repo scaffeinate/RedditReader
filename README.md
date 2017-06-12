@@ -1,2 +1,3 @@
-# reddit-client-android
+# RedditReader
+
 Reddit Client App for Android
