@@ -1,3 +1,5 @@
+![ic_launcher](https://user-images.githubusercontent.com/1825853/27062805-b6a55960-4fbb-11e7-9a34-e3d1348af24f.png)
+
 # RedditReader
 Reddit client for Android. Min SDK 16, Target SDK 25.
 
